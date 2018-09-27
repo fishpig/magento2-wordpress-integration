@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="associated_posts" sortOrder="40">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Associatied Blog Posts</label>
+        </settings>
+        <container name="associated_posts_container" sortOrder="160">
+            <htmlContent name="associated_posts_content">
+                <block name="associated_posts_content_grid" class="FishPig\WordPress\Block\Adminhtml\Catalog\Product\Edit\PostAssociation"/>
+            </htmlContent>
+        </container>
+    </fieldset>
+</form>

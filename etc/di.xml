@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<!-- Post Association Interface Implementations -->
+	<preference for="FishPig\WordPress\Api\Data\PostAssociationInterface" type="FishPig\WordPress\Model\PostAssociation" />
+	<preference for="FishPig\WordPress\Api\Data\PostAssociationSearchResultsInterface" type="FishPig\WordPress\Model\PostAssociationSearchResults" />
+	<preference for="FishPig\WordPress\Api\PostAssociationRepositoryInterface" type="FishPig\WordPress\Model\PostAssociationRepository" />
+	<!-- Post Association Command Interface Implementations -->
+	<preference for="FishPig\WordPress\Model\PostAssociation\Command\DeleteInterface" type="FishPig\WordPress\Model\PostAssociation\Command\Delete" />
+	<preference for="FishPig\WordPress\Model\PostAssociation\Command\GetInterface" type="FishPig\WordPress\Model\PostAssociation\Command\Get" />
+	<preference for="FishPig\WordPress\Model\PostAssociation\Command\GetListInterface" type="FishPig\WordPress\Model\PostAssociation\Command\GetList" />
+	<preference for="FishPig\WordPress\Model\PostAssociation\Command\SaveInterface" type="FishPig\WordPress\Model\PostAssociation\Command\Save" />
+	<preference for="FishPig\WordPress\Model\PostAssociation\Command\SaveMultipleInterface" type="FishPig\WordPress\Model\PostAssociation\Command\SaveMultiple" />
+	<!-- Product Repository Plugin to Handle Extension Attribute Logic -->
+	<type name="Magento\Catalog\Api\ProductRepositoryInterface">
+		<plugin name="HandleProductAssociationExtensionAttirbuteLogic" type="FishPig\WordPress\Plugin\Catalog\ProductRepository" />
+	</type>
 	<!-- Setup dynamic router -->
 	<type name="Magento\Framework\App\Router\ActionList">
 		<plugin name="FishPig_WordPress" type="FishPig\WordPress\Plugin\Magento\Framework\App\Router\ActionListPlugin" sortOrder="10" disabled="false"/>

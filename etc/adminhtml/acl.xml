@@ -10,6 +10,9 @@
                         </resource>
                     </resource>
                 </resource>
+                <resource id="Magento_Catalog::catalog">
+                    <resource id="FishPig_WordPress::post_association" title="Blog Post Association" translate="title" sortOrder="50" />
+                </resource>
             </resource>
         </resources>
     </acl>

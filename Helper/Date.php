@@ -24,7 +24,7 @@ class Date extends AbstractHelper
 	public function __construct(Context $context, OptionManager $optionManager)
 	{
 		parent::__construct($context);
-		
+
 		$this->optionManager = $optionManager;
 	}
 
