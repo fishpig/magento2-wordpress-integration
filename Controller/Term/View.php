@@ -54,7 +54,10 @@ class View extends \FishPig\WordPress\Controller\Action
         $request = $this->getRequest();
 
         try {
-            $term = $this->termRepository->get((int)$request->getParam('id'));
+            $termId = (int)$request->getParam('id');
+            $term = ($taxonomy = $request->getParam('taxonomy'))
+                ? $this->termRepository->getWithTaxonomy($termId, $taxonomy)
+                : $this->termRepository->get($termId);
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
             // The term does not exist
             // This may be that it does but it doesn't exist for this scope (WPML)

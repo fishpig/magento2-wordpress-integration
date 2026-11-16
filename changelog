@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.33.1] - 2026-11-16
+### [Fixed]
+- Fixed term archives loading the wrong taxonomy for shared terms (a term_id
+  used by more than one taxonomy). This caused empty archives. The term router
+  now passes the matched taxonomy and the term is loaded using it.
+
 ## [3.33.0] - 2026-10-20
 ### [Security]
 - Fixed unauthenticated SQL injection in the WordPress theme. setup.php replaced

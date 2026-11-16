@@ -62,7 +62,7 @@ class TermRouter implements \Magento\Framework\App\RouterInterface
                     return $this->requestDispatcher->dispatch(
                         $request,
                         '*/term/view',
-                        ['id' => $termId]
+                        ['id' => $termId, 'taxonomy' => $taxonomy->getTaxonomy()]
                     );
                 }
             }
