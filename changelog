@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.33.2] - 2026-11-23
+### [Security]
+- Fixed unpublished posts being viewable by ID. Draft, pending, scheduled,
+  trashed and revision posts could be loaded by guests through
+  /wordpress/post/view/id/<id> or ?p=<id>&preview=1. Post view now only allows
+  the statuses the router accepts (publish, private). Private posts still
+  require a Magento customer login. Previews of unpublished posts are no
+  longer shown until signed preview links are added.
+- Fixed the excerpt or content of password protected posts being output in
+  the meta description before the password was entered.
+
 ## [3.33.1] - 2026-11-16
 ### [Fixed]
 - Fixed term archives loading the wrong taxonomy for shared terms (a term_id

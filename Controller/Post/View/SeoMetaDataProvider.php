@@ -25,13 +25,16 @@ class SeoMetaDataProvider extends \FishPig\WordPress\Controller\Action\SeoMetaDa
         $this->setCanonicalUrl($post->getUrl());
         $this->setPageTitle($post->getName());
 
-        if ($description = $post->getPostExcerpt(32)) {
+        // Don't leak the excerpt/content of a password protected post
+        if (!$post->isViewableForVisitor()) {
+            // Leave the blog description set by the parent
+        } elseif ($description = $post->getPostExcerpt(32)) {
             $this->setMetaDescription($description);
         } elseif ($description = strip_tags($post->getContent())) {
             if (strlen($description) > 250) {
                 $description = rtrim(substr($description, 0, 250));
             }
-            $this->setMetaDescription($description);            
+            $this->setMetaDescription($description);
         }
 
         if (!$post->isPublic()) {

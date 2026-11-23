@@ -115,6 +115,12 @@ class View extends \FishPig\WordPress\Controller\Action
             }
         }
 
+        // Only statuses the permalink router accepts are viewable. This blocks
+        // drafts, pending, scheduled, trashed and revision posts loaded by ID.
+        if (!in_array($post->getPostStatus(), ['publish', 'protected', 'private'], true)) {
+            return $this->getNoRouteForward();
+        }
+
         if ($post->getPostStatus() === 'private' && !$this->customerSession->isLoggedIn()) {
             return $this->getNoRouteForward();
         }
