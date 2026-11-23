@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.33.3] - 2026-11-23
+### [Added]
+- Added signed preview links so previews of unpublished posts work again after
+  3.33.2. The WordPress theme signs preview links with the auth key and Magento
+  verifies the signature. Unsigned preview requests (the block editor builds
+  draft preview links itself) are sent to WordPress, which checks the user can
+  edit the post and redirects back with a signed link. The theme must be
+  redeployed after updating (fishpig:wordpress:theme --deploy).
+### [Changed]
+- Added FishPig\WordPress\Model\Post\PreviewSignature as a constructor argument
+  of FishPig\WordPress\Controller\Post\View. Classes that extend it and
+  override the constructor must be updated.
+
 ## [3.33.2] - 2026-11-23
 ### [Security]
 - Fixed unpublished posts being viewable by ID. Draft, pending, scheduled,

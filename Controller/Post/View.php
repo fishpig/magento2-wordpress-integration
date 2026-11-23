@@ -35,11 +35,17 @@ class View extends \FishPig\WordPress\Controller\Action
     protected $customerSession = null;
 
     /**
+     * @var \FishPig\WordPress\Model\Post\PreviewSignature
+     */
+    private $previewSignature;
+
+    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \FishPig\WordPress\Controller\Action\Context $wpContext
      * @param \FishPig\WordPress\Model\PostRepository $postRepository,
      * @param \FishPig\WordPress\Api\Controller\Action\SeoMetaDataProviderInterface $seoMetaDataProvider
      * @param \Magento\Customer\Model\Session $customerSession
+     * @param \FishPig\WordPress\Model\Post\PreviewSignature $previewSignature
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -47,12 +53,14 @@ class View extends \FishPig\WordPress\Controller\Action
         \FishPig\WordPress\Model\PostRepository $postRepository,
         \FishPig\WordPress\Api\Controller\Action\SeoMetaDataProviderInterface $seoMetaDataProvider,
         \FishPig\WordPress\Api\Controller\Action\BreadcrumbsDataProviderInterface $breadcrumbsDataProvider,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session $customerSession,
+        \FishPig\WordPress\Model\Post\PreviewSignature $previewSignature
     ) {
         $this->postRepository = $postRepository;
         $this->seoMetaDataProvider = $seoMetaDataProvider;
         $this->breadcrumbsDataProvider = $breadcrumbsDataProvider;
         $this->customerSession = $customerSession;
+        $this->previewSignature = $previewSignature;
 
         parent::__construct($context, $wpContext);
     }
@@ -115,14 +123,30 @@ class View extends \FishPig\WordPress\Controller\Action
             }
         }
 
-        // Only statuses the permalink router accepts are viewable. This blocks
-        // drafts, pending, scheduled, trashed and revision posts loaded by ID.
-        if (!in_array($post->getPostStatus(), ['publish', 'protected', 'private'], true)) {
-            return $this->getNoRouteForward();
-        }
+        // Preview links signed by WordPress can view any post status
+        if (!$this->previewSignature->isValid((int)$post->getId(), $request)) {
+            // Only statuses the permalink router accepts are viewable. This blocks
+            // drafts, pending, scheduled, trashed and revision posts loaded by ID.
+            // Private posts require a Magento customer login.
+            $isViewable = in_array($post->getPostStatus(), ['publish', 'protected', 'private'], true)
+                && ($post->getPostStatus() !== 'private' || $this->customerSession->isLoggedIn());
 
-        if ($post->getPostStatus() === 'private' && !$this->customerSession->isLoggedIn()) {
-            return $this->getNoRouteForward();
+            if (!$isViewable) {
+                $isUnsignedPreview = ($request->getParam('preview') !== null || (int)$request->getParam('preview_id') > 0)
+                    && $request->getParam(\FishPig\WordPress\Model\Post\PreviewSignature::PARAM_SIGNATURE) === null;
+
+                if ($isUnsignedPreview) {
+                    // The block editor builds draft preview links itself so they are not signed.
+                    // WordPress checks the user can edit the post and redirects back with a signed link.
+                    return $this->resultFactory->create(
+                        ResultFactory::TYPE_REDIRECT
+                    )->setUrl(
+                        $this->url->getSiteurl('wp-admin/admin-post.php?action=fishpig_preview&post=' . (int)$post->getId())
+                    );
+                }
+
+                return $this->getNoRouteForward();
+            }
         }
 
         // Check for comments
