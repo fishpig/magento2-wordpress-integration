@@ -128,7 +128,6 @@
         <arguments>
             <argument name="assetProviders" xsi:type="array">
                 <item name="cleanup" xsi:type="object" sortOrder="400">FishPig\WordPress\App\View\AssetProvider\AssetCleaner</item>
-                <item name="directives" xsi:type="object" sortOrder="999">FishPig\WordPress\App\View\AssetProvider\Directives</item>
             </argument>
         </arguments>
     </type>

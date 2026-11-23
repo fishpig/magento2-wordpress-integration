@@ -31,7 +31,10 @@ class Text extends AbstractWidget
      */
     public function getWidgetText()
     {
-        return $this->renderShortcode($this->getData('text'));
+        return $this->directiveFilter->filter(
+            (string)$this->renderShortcode($this->getData('text')),
+            \FishPig\WordPress\App\View\DirectiveFilter::SOURCE_WIDGETS
+        );
     }
     
     /**

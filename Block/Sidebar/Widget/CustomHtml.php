@@ -17,6 +17,17 @@ class CustomHtml extends AbstractWidget
     }
 
     /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->directiveFilter->filter(
+            (string)$this->getData('content'),
+            \FishPig\WordPress\App\View\DirectiveFilter::SOURCE_WIDGETS
+        );
+    }
+
+    /**
      * Render html output
      *
      * @return string

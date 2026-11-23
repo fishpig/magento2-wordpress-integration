@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.33.4] - 2026-11-23
+### [Security]
+- Improved how Magento directives ({{block}}, {{widget}} etc) are rendered in
+  WordPress content.
+### [Added]
+- Added Stores > Configuration > WordPress > Magento Directives. Directives are
+  rendered in all WordPress content by default. Select 'Specific Content' to
+  choose which content can render directives: post content and excerpts,
+  widgets, shortcodes (Plugin Shortcode Widget) and ACF fields (ACF add-on).
+- The theme stops directives in comments from being rendered. The theme must
+  be redeployed after updating (fishpig:wordpress:theme --deploy).
+### [Changed]
+- Directives are now only rendered in post content, excerpts, widgets,
+  shortcodes and ACF fields. Other text (eg. term descriptions) no longer
+  renders directives.
+- Added FishPig\WordPress\App\View\DirectiveFilter as a constructor argument
+  of FishPig\WordPress\Model\Context and FishPig\WordPress\Block\Context.
+  Classes that extend these must be updated.
+- Removed FishPig\WordPress\App\View\AssetProvider\Directives.
+
 ## [3.33.3] - 2026-11-23
 ### [Added]
 - Added signed preview links so previews of unpublished posts work again after

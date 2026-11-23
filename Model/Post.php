@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace FishPig\WordPress\Model;
 
+use FishPig\WordPress\App\View\DirectiveFilter;
+
 class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\ViewableModelInterface
 {
     /**
@@ -94,6 +96,11 @@ class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\View
     private $customerSession;
 
     /**
+     * @var \FishPig\WordPress\App\View\DirectiveFilter
+     */
+    private $directiveFilter;
+
+    /**
      *
      */
     public function __construct(
@@ -129,6 +136,7 @@ class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\View
         $this->frontPage = $frontPage;
         $this->passwordManager = $passwordManager;
         $this->customerSession = $customerSession;
+        $this->directiveFilter = $wpContext->getDirectiveFilter();
 
         parent::__construct($context, $registry, $wpContext, $metaDataProvider, $resource, $resourceCollection, $data);
     }
@@ -223,13 +231,13 @@ class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\View
     public function getExcerpt($maxWords = 0)
     {
         if ($excerpt = trim($this->getData('post_excerpt'))) {
-            return $this->getData('post_excerpt');
+            return $this->directiveFilter->filter($this->getData('post_excerpt'), DirectiveFilter::SOURCE_CONTENT);
         }
 
         if ($excerpt = $this->_getPostTeaser(true)) {
             $this->setData('post_excerpt', $excerpt);
 
-            return $excerpt;
+            return $this->directiveFilter->filter($excerpt, DirectiveFilter::SOURCE_CONTENT);
         }
 
         if ((int)$maxWords > 1) {
@@ -496,7 +504,7 @@ class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\View
                         ->toHtml();
                 }
 
-               return $renderedContent;
+               return $this->directiveFilter->filter($renderedContent, DirectiveFilter::SOURCE_CONTENT);
             }
         }
 
@@ -505,7 +513,10 @@ class Post extends AbstractMetaModel implements \FishPig\WordPress\Api\Data\View
         if (!$this->hasData($key)) {
             $this->setData(
                 $key,
-                $this->shortcodeFactory->create()->setShortcode($content)->setPost($this)->toHtml()
+                $this->directiveFilter->filter(
+                    $this->shortcodeFactory->create()->setShortcode($content)->setPost($this)->toHtml(),
+                    DirectiveFilter::SOURCE_CONTENT
+                )
             );
         }
 

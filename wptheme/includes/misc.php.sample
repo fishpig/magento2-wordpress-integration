@@ -13,6 +13,15 @@ class Misc
      */
     public function __construct()
     {
+        // Magento renders directives ({{block}} etc) in some WordPress HTML, such
+        // as page builder layouts. Comments are written by visitors so add a zero
+        // width space between the braces to stop them being rendered.
+        foreach (['comment_text', 'get_comment_author', 'get_comment_excerpt'] as $hook) {
+            add_filter($hook, function($value) {
+                return is_string($value) ? str_replace('{{', "{\u{200B}{", $value) : $value;
+            }, 100);
+        }
+
         add_action('save_post', function($post_id) {
             try {
                 $post = get_post($post_id);

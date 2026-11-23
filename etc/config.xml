@@ -19,6 +19,11 @@
             <xmlsitemap>
                 <enabled>1</enabled>
             </xmlsitemap>
+            <directives>
+                <mode>all</mode>
+                <content>1</content>
+                <widgets>0</widgets>
+            </directives>
         </wordpress>
     </default>
 </config>

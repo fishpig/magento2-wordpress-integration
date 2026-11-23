@@ -14,6 +14,7 @@ use FishPig\WordPress\Model\OptionRepository;
 use FishPig\WordPress\App\Url;
 use FishPig\WordPress\Model\ResourceModel\Post\CollectionFactory as PostCollectionFactory;
 use Magento\Framework\Serialize\SerializerInterface;
+use FishPig\WordPress\App\View\DirectiveFilter;
 
 class Context
 {
@@ -52,7 +53,12 @@ class Context
      * @var SerializerInterface
      */
     private $jsonSerializer;
-    
+
+    /**
+     * @var DirectiveFilter
+     */
+    private $directiveFilter;
+
     /**
      * @param Registry
      */
@@ -63,7 +69,8 @@ class Context
         Url $url,
         PostCollectionFactory $postCollectionFactory,
         SerializerInterface $serializer,
-        SerializerInterface $jsonSerializer
+        SerializerInterface $jsonSerializer,
+        DirectiveFilter $directiveFilter
     ) {
         $this->logger = $logger;
         $this->shortcodeFactory = $shortcodeFactory;
@@ -72,6 +79,7 @@ class Context
         $this->postCollectionFactory = $postCollectionFactory;
         $this->serializer = $serializer;
         $this->jsonSerializer = $jsonSerializer;
+        $this->directiveFilter = $directiveFilter;
     }
 
     /**
@@ -128,5 +136,13 @@ class Context
     public function getJsonSerializer(): SerializerInterface
     {
         return $this->jsonSerializer;
+    }
+
+    /**
+     * @return DirectiveFilter
+     */
+    public function getDirectiveFilter(): DirectiveFilter
+    {
+        return $this->directiveFilter;
     }
 }

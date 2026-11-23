@@ -97,6 +97,28 @@
                         </field>
                     </group>
                 </group>
+                <group id="directives"  sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Magento Directives</label>
+                    <comment><![CDATA[Render Magento directives, such as {{block}} and {{widget}}, in content written in WordPress.]]></comment>
+                    <field id="mode" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Render Directives In</label>
+                        <source_model>FishPig\WordPress\Model\Config\Source\DirectiveMode</source_model>
+                        <config_path>wordpress/directives/mode</config_path>
+                    </field>
+                    <field id="content" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Post Content and Excerpts</label>
+                        <comment>Includes page builder layouts.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>wordpress/directives/content</config_path>
+                        <depends><field id="mode">specific</field></depends>
+                    </field>
+                    <field id="widgets" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Widgets</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>wordpress/directives/widgets</config_path>
+                        <depends><field id="mode">specific</field></depends>
+                    </field>
+                </group>
                 <group id="advanced"  sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Advanced</label>
 

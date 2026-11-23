@@ -17,6 +17,7 @@ use Magento\Framework\Serialize\SerializerInterface;
 use FishPig\WordPress\Helper\BlogInfo;
 use FishPig\WordPress\App\Integration\Tests\Proxy as IntegrationTests;
 use Magento\Framework\App\State as AppState;
+use FishPig\WordPress\App\View\DirectiveFilter;
 
 class Context
 {
@@ -71,6 +72,11 @@ class Context
     private $appState;
 
     /**
+     * @var DirectiveFilter
+     */
+    private $directiveFilter;
+
+    /**
      * @param Registry
      */
     public function __construct(
@@ -83,8 +89,10 @@ class Context
         SerializerInterface $jsonSerializer,
         BlogInfo $blogInfo,
         IntegrationTests $integrationTests,
-        AppState $appState
+        AppState $appState,
+        DirectiveFilter $directiveFilter
     ) {
+        $this->directiveFilter = $directiveFilter;
         $this->registry = $registry;
         $this->logger = $logger;
         $this->shortcodeFactory = $shortcodeFactory;
@@ -175,5 +183,13 @@ class Context
     public function getAppState(): AppState
     {
         return $this->appState;
+    }
+
+    /**
+     * @return DirectiveFilter
+     */
+    public function getDirectiveFilter(): DirectiveFilter
+    {
+        return $this->directiveFilter;
     }
 }

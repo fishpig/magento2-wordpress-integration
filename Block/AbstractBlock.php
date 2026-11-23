@@ -58,6 +58,11 @@ abstract class AbstractBlock extends \Magento\Framework\View\Element\Template
     protected $registry;
 
     /**
+     * @var \FishPig\WordPress\App\View\DirectiveFilter
+     */
+    protected $directiveFilter;
+
+    /**
      * @param  \Magento\Framework\View\Element\Template\Context $context,
      * @param  \FishPig\WordPress\Block\Context $wpContext,
      * @param  array $data = []
@@ -74,6 +79,7 @@ abstract class AbstractBlock extends \Magento\Framework\View\Element\Template
         $this->url = $wpContext->getUrl();
         $this->integrationTests = $wpContext->getIntegrationTests();
         $this->appState = $wpContext->getAppState();
+        $this->directiveFilter = $wpContext->getDirectiveFilter();
         parent::__construct($context, $data);
     }
 
